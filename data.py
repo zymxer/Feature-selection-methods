@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 
+
 def get_wine():
     data = pd.read_csv(filepath_or_buffer='wine+quality\winequality-white.csv', delimiter=';')
 
@@ -18,6 +19,7 @@ def get_wine():
     x_test = data_test.drop("quality", axis=1).to_numpy()
     y_test = data_test["quality"].to_numpy()
     return (x_train, y_train), (x_test, y_test)
+
 
 def get_mushrooms():
     data = pd.read_csv(filepath_or_buffer='mushroom\\agaricus-lepiota.data', header=None)
