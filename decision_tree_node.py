@@ -54,13 +54,13 @@ class Node:
                 splits.append(i)
         return splits
 
-    def best_split(self, x_train: np.ndarray, y_train: np.ndarray):
-        """ Returns best split for given dataset without feature selection """
+    def best_split(self, x_train: np.ndarray, y_train: np.ndarray, selected_features: np.ndarray = None):
+        """ Returns best split for given dataset """
 
         best_gain = -np.inf
         best_split = None
 
-        features = range(x_train.shape[1])
+        features = range(x_train.shape[1]) if selected_features is None else selected_features
 
         for i in features:
             feature = x_train[:, i]
@@ -76,6 +76,8 @@ class Node:
                 best_split = (i, feature[order[feature_value_idx]])
 
         # no mean value for split, splitting categorical values as <= and > parts
+        if best_split is None:
+            return None, None
         return best_split[0], best_split[1]
 
     def split_dataset(self, x_train: np.ndarray, y_train: np.ndarray, feature_idx: int, value):
@@ -84,14 +86,16 @@ class Node:
         left_mask = x_train[:, feature_idx] <= value
         return (x_train[left_mask], y_train[left_mask]), (x_train[~left_mask], y_train[~left_mask])
 
-    def train(self, x_train: np.ndarray, y_train: np.ndarray):
+    def train(self, x_train: np.ndarray, y_train: np.ndarray, selected_features: np.ndarray = None):
 
         self.prediction = np.mean(y_train)
         # if 1 observation is left or prediction is exact
         if x_train.shape[0] == 1 or self.prediction == 0 or self.prediction == 1:
             return
 
-        self.feature_idx, self.feature_value = self.best_split(x_train, y_train)
+        self.feature_idx, self.feature_value = self.best_split(x_train, y_train, selected_features)
+        if self.feature_idx is None:
+            return
 
         (x_left, y_left), (x_right, y_right) = self.split_dataset(x_train, y_train, self.feature_idx, self.feature_value)
 
@@ -99,8 +103,8 @@ class Node:
             return
 
         self.left, self.right = Node(self.depth - 1), Node(self.depth - 1)
-        self.left.train(x_left, y_left)
-        self.right.train(x_right, y_right)
+        self.left.train(x_left, y_left, selected_features)
+        self.right.train(x_right, y_right, selected_features)
 
     def predict(self, observation: np.ndarray):
         """ Predicts the class of given observation """

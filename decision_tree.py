@@ -1,17 +1,21 @@
 import numpy as np
 import time
 
+from classificator import Classificator
 from decision_tree_node import Node
 
-class DecisionTree:
+
+class DecisionTree(Classificator):
     def __init__(self, depth: int):
         self.root = Node(depth)
         self.depth = depth
         self.train_time = 0
 
-    def train(self, x_train: np.ndarray, y_train: np.ndarray):
+    def train(self, x_train: np.ndarray, y_train: np.ndarray, selected_features: np.ndarray = None):
         start = time.time()
-        self.root.train(x_train, y_train)
+        ##########
+        self.root.depth = self.depth
+        self.root.train(x_train, y_train, selected_features)
         end = time.time()
         self.train_time = round(end - start, 2)
 
