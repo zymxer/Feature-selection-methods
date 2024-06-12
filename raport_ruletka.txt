@@ -1,0 +1,39 @@
+Selekcja ruletkowa, znana także jako selekcja proporcjonalna do dopasowania (ang. roulette wheel selection), jest jedną z metod selekcji stosowanych w algorytmach ewolucyjnych.
+Używana jest głównie w algorytmach genetycznych do wyboru osobników do reprodukcji w następnym pokoleniu. W metodzie tej osobniki są wybierane losowo, przy czym prawdopodobieństwo
+ich wyboru jest proporcjonalne do wartości ich funkcji dopasowania.
+
+Celem niniejszego raportu jest przedstawienie implementacji i wyników zastosowania selekcji ruletkowej na zbiorze danych "Mushroom" z UCI Machine Learning Repository.
+Zbiór danych "Mushroom" zawiera informacje o różnych gatunkach grzybów, w tym o ich cechach oraz klasie, która informuje, czy dany grzyb jest jadalny (edible) czy trujący (poisonous).
+Zbiór danych składa się z 22 atrybutów kategorycznych, takich jak kształt kapelusza, kolor blaszek, zapach itp.
+
+Proces Implementacji
+
+W tej części projektu zostały przeprowadzone następujące kroki:
+
+Wczytywanie i przetwarzanie danych:
+Dane zostały wczytane i przetworzone tak, aby wartości kategoryczne zostały zamienione na numeryczne.
+
+Podział danych na zbiory:
+Dane zostały podzielone na zbiór treningowy i testowy przy użyciu ręcznie napisanej funkcji train_test_split_manual.
+
+Trening modelu:
+Zaimplementowano prosty klasyfikator drzewa decyzyjnego (SimpleDecisionTree), który został przetrenowany na zbiorze treningowym.
+
+Przewidywanie i obliczanie wartości dopasowania:
+Dla każdego przykładu w zbiorze testowym obliczono prawdopodobieństwo przynależności do klasy na podstawie wytrenowanego modelu.
+Na podstawie tych prawdopodobieństw obliczono wartości dopasowania jako maksymalne prawdopodobieństwo przynależności do jednej z klas.
+
+Selekcja ruletkowa:
+Zastosowano metodę selekcji ruletkowej do wyboru próbek na podstawie ich wartości dopasowania.
+
+Wyniki:
+Średnie czasy wykonania poszczególnych kroków po dziesięciu testach:
+Przetwarzanie danych: 3.3757 sekundy (+- 0.3242 sekundy)
+Podział danych na treningowe i testowe: 0.0030 sekundy (+- 0.0012 sekundy)
+Trening modelu: 0.0190 sekundy (+- 0.0051 sekundy)
+Przewidywanie i obliczanie dopasowania: 0.0289 sekundy (+- 0.0102 sekundy)
+Selekcja ruletkowa: 0.0010 sekundy (+- 0.0002 sekundy)
+
+Selekcja ruletkowa jest efektywną metodą wyboru próbek na podstawie wartości dopasowania. Implementacja tej metody w kontekście tego zbioru danych
+wykazała, że jest ona szybka i skuteczna. Mimo że proces przetwarzania danych wymagał największych zasobów czasowych, inne etapy były realizowane bardzo szybko.
+Metoda selekcji ruletkowej może być z powodzeniem stosowana w innych kontekstach, gdzie konieczne jest wybieranie próbek proporcjonalnie do ich dopasowania.
